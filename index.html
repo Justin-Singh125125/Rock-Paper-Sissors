@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://www.gstatic.com/firebasejs/5.5.2/firebase.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <title>Document</title>
+</head>
+
+<body>
+
+    <button id='push'>Push</button>
+    <script>
+        // Initialize Firebase
+        var config = {
+            apiKey: "AIzaSyApLk8Q6AsYyaBWsfIcg4wNT5_9k1yhgEY",
+            authDomain: "rock-paper-scissors-125125.firebaseapp.com",
+            databaseURL: "https://rock-paper-scissors-125125.firebaseio.com",
+            projectId: "rock-paper-scissors-125125",
+            storageBucket: "rock-paper-scissors-125125.appspot.com",
+            messagingSenderId: "304058644937"
+        };
+        firebase.initializeApp(config);
+
+
+        var database = firebase.database();
+
+        var connectedRef = firebase.database().ref(".info/connected");
+        connectedRef.on("value", function (snap) {
+            if (snap.val() === true) {
+                database.ref().set({
+                    Connected: true,
+
+                })
+            }
+            else {
+                database.ref().set({
+                    Connected: false,
+                })
+            }
+
+
+
+        })
+    </script>
+
+</body>
+
+</html>

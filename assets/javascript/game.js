@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    console.log('test');
+
 
 
     // Initialize Firebase
@@ -11,51 +11,80 @@ $(document).ready(function () {
         storageBucket: "rock-paper-scissors-125125.appspot.com",
         messagingSenderId: "304058644937"
     };
+    var playerOneStatus = false;
+    var playerTwoStatus = false;
+    var check = true;
 
     firebase.initializeApp(config);
 
-    //create a database
+
+    //we need to track how many users are connected so we can start 
+    //building rules for our game
+
+    //initalize the database
     var database = firebase.database();
 
+    //have a variable target the connections tab in the database
+    var connectionsTab = database.ref("/Connections");
+    //have a variable taraget the game mechanics tab in the database
+    var gameMechanics = database.ref("/GameMechanics");
 
-    var p1Wins = 0;
-    var p1Losses = 0;
-    var p1Name = 0;
-    var p1Choice = "";
+    //have a variable target when someone connects
+    var whenConnected = database.ref(".info/connected");
 
-    var p2Wins = 0;
-    var p2Losses = 0;
-    var p2Name = 0;
-    var p2Choice = "";
+    //check if anything changed within whenConnected
+    whenConnected.on('value', function (snap) {
+        //if snap val is true
+        if (snap.val()) {
+            //write data too the connections tab
+            var con = connectionsTab.push({
+                Status: true,
+            })
 
-    var playerTurn = 0;
-    var whoAmI = "none";
+            //we create another variable because we want to delete a specific one 
+            //when the user dissconnects
+            //this will remove the specific user that lef
+            con.onDisconnect().remove();
+        }
+    })
 
-    var theme = 1;
+    //we want to check if anything in connections tab has changed
+    //we will store how many people are online here
+    connectionsTab.on('value', function (snap) {
+        var numOnline = snap.numChildren();
+        if (check == true) {
+            if (numOnline == 1) {
+                gameMechanics.update({
+                    playerOneStatus: true,
+                });
 
-    var numOnline = 0;
-    //this button will initialize the whole entire database for the players
-    $(document).on('click', '#playerNameButton', function (e) {
-        //stops the webpage from refresing
-        e.preventDefault();
-        var playerName = $('#getPlayerName').val().trim();
-        //store information in database
-        //this will initialize all of the player data
-        database.ref().on('value', function (snap) {
-            numOnline = snap.val().count;
-        })
-        numOnline++;
-        database.ref().update({
-            Name: playerName,
-            Wins: 0,
-            Loses: 0,
-            playerTurn: playerTurn,
-            count: numOnline,
 
-        })
+            }
+            if (numOnline == 2) {
+                gameMechanics.update({
+                    playerTwoStatus: true,
+                });
+                check = false;
+            }
+        }
+        else {
+            if (numOnline == 1) {
+                gameMechanics.update({
+                    playerTwoStatus: false,
+                });
+            }
+            if (numOnline == 0) {
+                gameMechanics.update({
+                    playerOneStatus: false,
+                });
+            }
+        }
+
+
 
 
     })
+
 
 
 

@@ -1,0 +1,24 @@
+*{
+    box-sizing: border-box;
+}
+body{
+    text-align: center;
+}
+.btn{
+    width: 100%;
+    margin: 10px;
+}
+.card-body{
+    height: 214px;
+}
+#player-1-status, #player-2-status{
+    text-align: left;
+}
+
+.loading-section{
+    margin: 0 auto;
+    
+}
+.jumbotron{
+    padding: 1rem 1rem;
+}

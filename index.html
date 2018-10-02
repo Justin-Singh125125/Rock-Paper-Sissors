@@ -8,17 +8,74 @@
     <script src="https://www.gstatic.com/firebasejs/5.5.2/firebase.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="./assets/javascript/game.js"></script>
-    <title>Document</title>
+    <link rel="stylesheet" href="./assets/css/reset.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+        crossorigin="anonymous">
+    <link rel="stylesheet" href="./assets/css/style.css">
+    <title>Rock, Paper, Sissors</title>
 </head>
 
 <body>
+    <div class="jumbotron">
+        <h1>ROCK, PAPER, SCISSORS</h1>
+        <h2>Battle your friends now!</h2>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h2>Player 1</h2>
 
-    <form>
-        Name Input:<br>
-        <input id="getPlayerName" type="text" name="firstname">
-        <input id="playerNameButton" type="submit" value="Submit">
+                    </div>
+                    <div class="card-body">
+                        <p id=player-1-status>
+                            Status:
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h2>Choose your weapon</h2>
+                    </div>
+                    <div class="card-body">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <button class="btn btn-dark">Rock</button>
+                                </div>
+                                <div class="col-md-12">
+                                    <button class="btn btn-dark">Paper</button>
+                                </div>
+                                <div class="col-md-12">
+                                    <button class="btn btn-dark">Scissors</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h2>Player 2</h2>
+                    </div>
+                    <div class="card-body">
+                        <p id=player-2-status>
+                            Status:
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="loading-section">
+                <h1>Waiting for other player....</h1>
+                <img id="loading-gif" src="./assets/Images/loading.gif">
 
+            </div>
+        </div>
 
 </body>
 

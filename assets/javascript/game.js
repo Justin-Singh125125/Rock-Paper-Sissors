@@ -11,11 +11,10 @@ $(document).ready(function () {
         storageBucket: "rock-paper-scissors-125125.appspot.com",
         messagingSenderId: "304058644937"
     };
-    var playerOneStatus = false;
-    var playerTwoStatus = false;
-    var check = true;
+
 
     firebase.initializeApp(config);
+    var totalConnected = 0;
 
 
     //we need to track how many users are connected so we can start 
@@ -26,8 +25,8 @@ $(document).ready(function () {
 
     //have a variable target the connections tab in the database
     var connectionsTab = database.ref("/Connections");
-    //have a variable taraget the game mechanics tab in the database
-    var gameMechanics = database.ref("/GameMechanics");
+    var game = database.ref('/Game');
+
 
     //have a variable target when someone connects
     var whenConnected = database.ref(".info/connected");
@@ -37,9 +36,12 @@ $(document).ready(function () {
         //if snap val is true
         if (snap.val()) {
             //write data too the connections tab
+
             var con = connectionsTab.push({
-                Status: true,
+                playerStatus: true,
             })
+
+
 
             //we create another variable because we want to delete a specific one 
             //when the user dissconnects
@@ -48,45 +50,37 @@ $(document).ready(function () {
         }
     })
 
-    //we want to check if anything in connections tab has changed
-    //we will store how many people are online here
-    connectionsTab.on('value', function (snap) {
-        var numOnline = snap.numChildren();
-        if (check == true) {
-            if (numOnline == 1) {
-                gameMechanics.update({
-                    playerOneStatus: true,
-                });
+    connectionsTab.on('child_added', function () {
+        totalConnected += 1;
+        if (totalConnected == 1) {
 
-
-            }
-            if (numOnline == 2) {
-                gameMechanics.update({
-                    playerTwoStatus: true,
-                });
-                check = false;
-            }
         }
-        else {
-            if (numOnline == 1) {
-                gameMechanics.update({
-                    playerTwoStatus: false,
-                });
-            }
-            if (numOnline == 0) {
-                gameMechanics.update({
-                    playerOneStatus: false,
-                });
-            }
+        if (totalConnected == 2) {
+            game.update({
+                startGame: true,
+            })
         }
-
-
-
-
+        console.log(totalConnected);
+    })
+    connectionsTab.on('child_removed', function () {
+        totalConnected -= 1;
+        if (totalConnected < 2) {
+            game.update({
+                startGame: false,
+            })
+        }
+        console.log(totalConnected);
     })
 
 
 
 
 
+
 })
+
+
+
+
+
+

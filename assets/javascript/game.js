@@ -13,8 +13,13 @@ $(document).ready(function () {
     };
 
 
+
     firebase.initializeApp(config);
     var totalConnected = 0;
+    var playerOneStatus = false;
+    var playerOneName = "";
+    var playerTwoStatus = false;
+    var playerTwoName
 
 
     //we need to track how many users are connected so we can start 
@@ -41,8 +46,6 @@ $(document).ready(function () {
                 playerStatus: true,
             })
 
-
-
             //we create another variable because we want to delete a specific one 
             //when the user dissconnects
             //this will remove the specific user that lef
@@ -53,11 +56,13 @@ $(document).ready(function () {
     connectionsTab.on('child_added', function () {
         totalConnected += 1;
         if (totalConnected == 1) {
-
+            game.update({
+                playerOneStatus: true,
+            })
         }
         if (totalConnected == 2) {
             game.update({
-                startGame: true,
+                playerTwoStatus: true,
             })
         }
         console.log(totalConnected);
@@ -66,14 +71,31 @@ $(document).ready(function () {
         totalConnected -= 1;
         if (totalConnected < 2) {
             game.update({
-                startGame: false,
+                playerTwoStatus: false,
+            })
+        }
+        if (totalConnected < 1) {
+            game.update({
+                playerOneStatus: false,
             })
         }
         console.log(totalConnected);
     })
 
+    //this will store the users text
+    $('#username-btn').on('click', function (e) {
+        e.preventDefault();
+        var usernameText = $("#username-text").val().trim();
+        console.log(usernameText);
+        game.on('value', function (snap) {
+            playerOneStatus = snap.val().playerOneStatus;
+            playerTwoStatus = snap.val().playerTwoStatus;
+        })
 
-
+        if (playerOneStatus == true && playerTwoStatus == false) {
+            $('#player-1-status').text(usernameText);
+        }
+    })
 
 
 

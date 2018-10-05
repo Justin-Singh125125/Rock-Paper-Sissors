@@ -25,6 +25,10 @@ $(document).ready(function () {
     var playerTab = "";
     //a variable to store the username
     var username = "";
+    var playerOneSelection = "";
+    var playerOneUsername = "";
+    var playerTwoSelection = "";
+    var playerTwoUsername = "";
     $(document).on('click', '#username-btn', function (e) {
         e.preventDefault();
         //stores the text of the username entered
@@ -50,20 +54,26 @@ $(document).ready(function () {
                 //if the connecion drops, remove the player that was added
                 playerTab.onDisconnect().remove();
             }
+
+
+            alert('player one: select weapon!');
+            alert('player two: select weapon!');
+
+        })
+        $(document).on('click', '#weapons', function (e) {
+            e.preventDefault();
+            var selection = $(this).attr('data-value');
+            playerTab.update({
+                selection: selection,
+            })
         })
 
 
 
+        playerTab.on('value', function (snapshot) {
 
-        playerTab.on('value', function (snap) {
-            var inputArray = [];
-            snapshot.forEach(snap => {
-                inputArray.push(snap.val());
-                return false;
-            });
+        });
 
-            console.log(inputArray);
-        })
 
 
     })
